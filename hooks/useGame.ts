@@ -2,8 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { AnswerRecord, GameProgress, Question } from "@/types";
+import { shuffleOptions } from "@/utils/shuffleOptions";
 
 const STORAGE_KEY = "pattern-detective-progress";
+const SESSION_SEED_KEY = "pattern-detective-seed";
 
 const defaultProgress: GameProgress = {
   currentIndex: 0,
@@ -47,11 +49,30 @@ const clearProgress = () => {
   window.localStorage.removeItem(STORAGE_KEY);
 };
 
+const getSessionSeed = () => {
+  if (typeof window === "undefined") {
+    return 1;
+  }
+
+  const stored = window.sessionStorage.getItem(SESSION_SEED_KEY);
+  if (stored) {
+    const parsed = Number(stored);
+    if (!Number.isNaN(parsed)) {
+      return parsed;
+    }
+  }
+
+  const seed = Math.floor(Math.random() * 1_000_000_000);
+  window.sessionStorage.setItem(SESSION_SEED_KEY, seed.toString());
+  return seed;
+};
+
 export const useGame = (questions: Question[]) => {
   const [progress, setProgress] = useState<GameProgress>(defaultProgress);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [sessionSeed] = useState(getSessionSeed);
 
   useEffect(() => {
     const stored = loadProgress();
@@ -60,6 +81,12 @@ export const useGame = (questions: Question[]) => {
   }, []);
 
   const currentQuestion = questions[progress.currentIndex];
+  const shuffledOptions = useMemo(() => {
+    if (!currentQuestion) {
+      return [];
+    }
+    return shuffleOptions(currentQuestion.options, sessionSeed, currentQuestion.id);
+  }, [currentQuestion, sessionSeed]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -137,6 +164,7 @@ export const useGame = (questions: Question[]) => {
     selectedOption,
     submitted,
     hydrated,
+    shuffledOptions,
     correctCount,
     selectOption,
     submitAnswer,

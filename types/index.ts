@@ -6,10 +6,12 @@ export type Question = {
   title: string;
   difficulty: Difficulty;
   codeSnippet: string;
-  hints: string[];
+  hintsEn: string[];
+  hintsTr: string[];
   options: string[];
   correctOption: string;
-  explanation: string;
+  explanationEn: string;
+  explanationTr: string;
   whyNotOthers: string[];
   category: Category;
 };

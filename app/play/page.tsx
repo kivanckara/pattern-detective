@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CodeBlock from "@/components/CodeBlock";
 import OptionButton from "@/components/OptionButton";
@@ -16,11 +17,13 @@ export default function PlayPage() {
     selectedOption,
     submitted,
     hydrated,
+    shuffledOptions,
     selectOption,
     submitAnswer,
     nextQuestion,
     resetGame
   } = useGame(questions);
+  const [contentLanguage, setContentLanguage] = useState<"en" | "tr">("en");
 
   if (!hydrated || !currentQuestion) {
     return (
@@ -32,6 +35,14 @@ export default function PlayPage() {
 
   const isCorrect =
     selectedOption === currentQuestion.correctOption && submitted;
+  const hints =
+    contentLanguage === "en"
+      ? currentQuestion.hintsEn
+      : currentQuestion.hintsTr;
+  const explanation =
+    contentLanguage === "en"
+      ? currentQuestion.explanationEn
+      : currentQuestion.explanationTr;
 
   const handleNext = () => {
     if (progress.currentIndex >= questions.length - 1) {
@@ -82,9 +93,32 @@ export default function PlayPage() {
 
         <div className="space-y-6">
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-base font-semibold text-slate-900">Hints</h2>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-base font-semibold text-slate-900">Hints</h2>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                <span>Hints &amp; explanations</span>
+                <div className="flex rounded-full border border-slate-200 bg-white p-0.5">
+                  {(["en", "tr"] as const).map((lang) => (
+                    <button
+                      key={lang}
+                      type="button"
+                      onClick={() => setContentLanguage(lang)}
+                      aria-pressed={contentLanguage === lang}
+                      className={
+                        "rounded-full px-2.5 py-1 text-[11px] font-semibold transition " +
+                        (contentLanguage === lang
+                          ? "bg-slate-900 text-white"
+                          : "text-slate-600 hover:text-slate-900")
+                      }
+                    >
+                      {lang.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="mt-4 grid gap-3">
-              {currentQuestion.hints.map((hint, index) => (
+              {hints.map((hint, index) => (
                 <div
                   key={`${currentQuestion.id}-hint-${index}`}
                   className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm text-slate-700"
@@ -98,7 +132,7 @@ export default function PlayPage() {
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <h2 className="text-base font-semibold text-slate-900">Choose the pattern</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {currentQuestion.options.map((option) => (
+              {shuffledOptions.map((option) => (
                 <OptionButton
                   key={option}
                   label={option}
@@ -136,7 +170,7 @@ export default function PlayPage() {
           {submitted ? (
             <ResultPanel
               isCorrect={isCorrect}
-              explanation={currentQuestion.explanation}
+              explanation={explanation}
               whyNotOthers={currentQuestion.whyNotOthers}
             />
           ) : null}
