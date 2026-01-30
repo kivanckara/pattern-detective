@@ -40,15 +40,22 @@ public class NoDiscount : IDiscountStrategy
 {
     public decimal Apply(decimal total) => total;
 }`,
-    hints: [
+    hintsEn: [
       "Behavior changes at runtime by swapping objects.",
       "The client delegates a calculation to a pluggable policy.",
       "Concrete implementations share the same interface."
     ],
+    hintsTr: [
+      "Davranış, nesneler değiştirildiğinde çalışma zamanında değişir.",
+      "İstemci, hesaplamayı tak-çıkar bir policy'ye devreder.",
+      "Somut uygulamalar aynı interface'i paylaşır."
+    ],
     options: ["Strategy", "State", "Template Method", "Singleton"],
     correctOption: "Strategy",
-    explanation:
+    explanationEn:
       "The cart delegates the discount calculation to interchangeable strategy objects, allowing behavior to change without modifying the cart itself.",
+    explanationTr:
+      "Cart, indirim hesaplamasını değiştirilebilir Strategy nesnelerine devrederek davranışın Cart'ı değiştirmeden değişmesini sağlar.",
     whyNotOthers: [
       "State changes internal state transitions, but here there is no state machine driving behavior.",
       "Template Method relies on inheritance and overridable steps, not interchangeable objects.",
@@ -90,15 +97,22 @@ public class EmailNotifier : IOrderObserver
         Console.WriteLine($"Email: order is {status}");
     }
 }`,
-    hints: [
+    hintsEn: [
       "Many listeners react to a single subject’s state changes.",
       "Observers can be added or removed at runtime.",
       "The subject does not know concrete observer types."
     ],
+    hintsTr: [
+      "Bir subject'in durum değişikliklerine birçok listener tepki verir.",
+      "Observer'lar çalışma zamanında eklenip kaldırılabilir.",
+      "Subject, somut observer türlerini bilmez."
+    ],
     options: ["Observer", "Mediator", "Command", "Proxy"],
     correctOption: "Observer",
-    explanation:
+    explanationEn:
       "The order notifies registered observers whenever its status changes, decoupling the subject from concrete listeners.",
+    explanationTr:
+      "Order, durum değiştiğinde kayıtlı Observer'ları bildirir; subject ile somut dinleyiciler arasındaki bağı gevşetir.",
     whyNotOthers: [
       "Mediator centralizes complex interactions, but here observers are directly notified.",
       "Command encapsulates requests, not event subscriptions.",
@@ -145,15 +159,22 @@ public class LoggingStream : StreamDecorator
         base.Write(payload);
     }
 }`,
-    hints: [
+    hintsEn: [
       "Adds behavior without changing the original component.",
       "Wraps an object that implements the same interface.",
       "Multiple wrappers can be stacked."
     ],
+    hintsTr: [
+      "Orijinal component'i değiştirmeden davranış ekler.",
+      "Aynı interface'i uygulayan bir nesneyi sarar.",
+      "Birden çok wrapper üst üste eklenebilir."
+    ],
     options: ["Decorator", "Adapter", "Facade", "Proxy"],
     correctOption: "Decorator",
-    explanation:
+    explanationEn:
       "The stream decorator wraps the core stream and adds logging while keeping the same interface.",
+    explanationTr:
+      "Stream decorator, core stream'i sarar ve logging eklerken aynı interface'i korur.",
     whyNotOthers: [
       "Adapter changes interfaces, but here the interface stays the same.",
       "Facade provides a simplified API, not stacked wrappers.",
@@ -193,15 +214,22 @@ public class PdfDocument : IDocument
         Console.WriteLine("Render PDF");
     }
 }`,
-    hints: [
+    hintsEn: [
       "Subclass decides which concrete product to create.",
       "Creation is deferred to a method override.",
       "The creator uses the product through an interface."
     ],
+    hintsTr: [
+      "Alt sınıf hangi somut ürünün oluşturulacağına karar verir.",
+      "Oluşturma, override edilen bir metoda ertelenir.",
+      "Creator, ürünü bir interface üzerinden kullanır."
+    ],
     options: ["Factory Method", "Abstract Factory", "Template Method", "Singleton"],
     correctOption: "Factory Method",
-    explanation:
+    explanationEn:
       "The creator defines a factory method that subclasses override to decide which document to instantiate.",
+    explanationTr:
+      "Creator, alt sınıfların hangi document'i oluşturacağını belirlediği bir factory method tanımlar.",
     whyNotOthers: [
       "Abstract Factory creates families of products, which is not shown.",
       "Template Method is about algorithm steps, not object creation.",
@@ -241,15 +269,22 @@ public class BillingAdapter : IPaymentGateway
         _legacy.MakePayment(cents);
     }
 }`,
-    hints: [
+    hintsEn: [
       "Old API cannot be modified but must match a new interface.",
       "Wrapper converts the input format.",
       "Client code depends on the target interface."
     ],
+    hintsTr: [
+      "Eski API değiştirilemez ama yeni bir interface ile uyumlu olmalıdır.",
+      "Wrapper giriş formatını dönüştürür.",
+      "Client code target interface'e bağlıdır."
+    ],
     options: ["Adapter", "Bridge", "Decorator", "Proxy"],
     correctOption: "Adapter",
-    explanation:
+    explanationEn:
       "The adapter wraps the legacy system and converts the call to match the new gateway interface.",
+    explanationTr:
+      "Adapter, legacy system'i sarar ve çağrıyı yeni gateway interface'ine uyarlamak için dönüştürür.",
     whyNotOthers: [
       "Bridge separates abstraction and implementation, not seen here.",
       "Decorator adds behavior while keeping the same interface, not translation.",
@@ -289,15 +324,22 @@ public class MovieNightFacade
         _speakers.Surround();
     }
 }`,
-    hints: [
+    hintsEn: [
       "A single entry point coordinates multiple subsystems.",
       "Clients use a simplified API.",
       "Subsystems remain unchanged."
     ],
+    hintsTr: [
+      "Tek bir giriş noktası birden çok subsystem'i koordine eder.",
+      "Client'lar basitleştirilmiş bir API kullanır.",
+      "Subsystem'ler değişmeden kalır."
+    ],
     options: ["Facade", "Mediator", "Singleton", "Chain of Responsibility"],
     correctOption: "Facade",
-    explanation:
+    explanationEn:
       "The facade provides a simplified interface to multiple subsystems for a single use case.",
+    explanationTr:
+      "Facade, tek bir kullanım senaryosu için birden çok subsystem'e basit bir arayüz sağlar.",
     whyNotOthers: [
       "Mediator coordinates peer objects with complex interactions, not a simple wrapper.",
       "Singleton is about one instance, not a unified API.",
@@ -343,15 +385,22 @@ public class Toolbar
         }
     }
 }`,
-    hints: [
+    hintsEn: [
       "Requests are encapsulated as objects.",
       "Invoker triggers actions without knowing receivers.",
       "Commands can be stored and invoked later."
     ],
+    hintsTr: [
+      "İstekler nesne olarak kapsüllenir.",
+      "Invoker, receiver'ı bilmeden eylemleri tetikler.",
+      "Command'lar saklanabilir ve daha sonra çalıştırılabilir."
+    ],
     options: ["Command", "Observer", "Strategy", "Template Method"],
     correctOption: "Command",
-    explanation:
+    explanationEn:
       "The toolbar invokes commands that encapsulate editor actions, decoupling invoker from receiver.",
+    explanationTr:
+      "Toolbar, editor eylemlerini kapsülleyen Command nesnelerini çağırarak invoker ile receiver'ı ayrıştırır.",
     whyNotOthers: [
       "Observer focuses on event subscriptions rather than encapsulated requests.",
       "Strategy swaps algorithms but does not model invocations as objects.",
@@ -399,15 +448,22 @@ public class OrderContext
 
     public string CurrentStatus => _state.Status;
 }`,
-    hints: [
+    hintsEn: [
       "Behavior changes based on internal state objects.",
       "State transitions are explicit in state classes.",
       "Context delegates behavior to current state."
     ],
+    hintsTr: [
+      "Davranış, iç state nesnelerine göre değişir.",
+      "State geçişleri state sınıflarında açıkça tanımlıdır.",
+      "Context davranışı mevcut state'e devreder."
+    ],
     options: ["State", "Strategy", "Chain of Responsibility", "Singleton"],
     correctOption: "State",
-    explanation:
+    explanationEn:
       "The context delegates behavior to state objects that manage transitions between order states.",
+    explanationTr:
+      "Context, order state'leri arasında geçişleri yöneten state nesnelerine davranışı devreder.",
     whyNotOthers: [
       "Strategy swaps algorithms but does not model transitions as part of the state.",
       "Chain of Responsibility passes requests along handlers instead of changing state.",
